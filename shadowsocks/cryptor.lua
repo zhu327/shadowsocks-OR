@@ -14,6 +14,7 @@ local cached_keys = {}
 
 
 local _M = { _VERSION = '0.10' }
+local mt = { __index = _M }
 
 
 local function random_string(length)
@@ -61,7 +62,7 @@ function _M:new(password, method)
         iv_sent = false
     }
 
-    setmetatable(o, { __index = self })
+    setmetatable(o, mt)
 
     o._method_info = self.get_method_info(method)
     if o._method_info then

@@ -8,6 +8,7 @@ local setmetatable = setmetatable
 
 
 local _M = { _VERSION = '0.10' }
+local mt = { __index = _M }
 
 
 ffi.cdef[[
@@ -66,7 +67,7 @@ function _M:new(cipher_name, key, iv, op)
         return nil
     end
 
-    setmetatable(o, { __index = self })
+    setmetatable(o, mt)
 
     local r = C.EVP_CipherInit_ex(o._ctx, o._cipher, nil, c_uchar(key), c_uchar(iv), op)
     if r == 0 then

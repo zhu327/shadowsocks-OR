@@ -11,6 +11,7 @@ end
 
 
 local _M = { _VERSION = '0.10' }
+local mt = { __index = _M }
 
 
 function _M:new(server_list)
@@ -21,7 +22,7 @@ function _M:new(server_list)
     }
     o._resolver = r
 
-    setmetatable(o, { __index = self })
+    setmetatable(o, mt)
 
     return o
 end

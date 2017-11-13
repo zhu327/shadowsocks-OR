@@ -11,6 +11,7 @@ local TIMEOUT = config["timeout"] * 1000
 
 
 local _M = { _VERSION = '0.10' }
+local mt = { __index = _M }
 
 
 function _M:new(sock)
@@ -26,7 +27,7 @@ function _M:new(sock)
         return nil
     end
 
-    setmetatable(o, { __index = self })
+    setmetatable(o, mt)
 
     return o
 end

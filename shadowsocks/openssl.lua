@@ -44,6 +44,7 @@ int EVP_CipherInit_ex(EVP_CIPHER_CTX *ctx, const EVP_CIPHER *type,
 int EVP_CipherUpdate(EVP_CIPHER_CTX *ctx, unsigned char *out,
          int *outl, unsigned char *in, int inl);
 
+int EVP_CIPHER_CTX_cleanup(EVP_CIPHER_CTX *a);
 void EVP_CIPHER_CTX_free(EVP_CIPHER_CTX *ctx);
 ]]
 
@@ -54,6 +55,11 @@ local function c_uchar(s)
     local c_s = ffi_new("unsigned char[?]", #s)
     ffi_copy(c_s, s)
     return c_s
+end
+
+function cleanup(ctx)
+    C.EVP_CIPHER_CTX_cleanup(ctx)
+    C.EVP_CIPHER_CTX_free(ctx)
 end
 
 function _M:new(cipher_name, key, iv, op)
@@ -75,7 +81,7 @@ function _M:new(cipher_name, key, iv, op)
         return nil
     end
 
-    ffi_gc(o._ctx, C.EVP_CIPHER_CTX_free)
+    ffi_gc(o._ctx, cleanup)
 
     return o
 end

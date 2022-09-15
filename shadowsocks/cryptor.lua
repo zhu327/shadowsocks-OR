@@ -82,7 +82,7 @@ function _M.get_method_info(method)
 end
 
 function _M:get_cipher(password, method, op, iv)
-    local key
+    local key, _
     local m = self._method_info
     if m[METHOD_INFO_KEY_LEN] > 0 then
         key, _ = evp_bytestokey(password,
